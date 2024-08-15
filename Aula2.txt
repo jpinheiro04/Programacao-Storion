@@ -1,0 +1,66 @@
+Aula 2 - Uilizando como base o código da aula 1, fazer um exemplo calculando a area de um retângulo:
+
+Servidor:
+
+package com.servico.calcula_retangulo;
+
+import javax.jws.WebService;
+import javax.jws.WebMethod;
+import javax.jws.WebParam;
+
+/**
+ *
+ * @author si
+ */
+@WebService(serviceName = "Calcula_Retangulo")
+public class Calcula_Retangulo {
+
+    /**
+     * This is a sample web service operation
+     */
+    @WebMethod(operationName = "Calcular_Retangulo")
+    public String Calcular_Retangulo(@WebParam(name = "base") int base,@WebParam(name = "altura") int altura) {
+        int result;
+        result = base * altura;
+        return result + " m²";
+    }
+}
+
+---------------------------------------------------------------------------------------------------
+
+Cliente:
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Calcula Retangulo</title>
+        <style>
+            body{
+            background-color: black;
+            color: aliceblue;
+            text-align: center;
+            } 
+        </style>
+    </head>
+    <body>
+        <h1>Calculadora de retângulo</h1>    <%-- start web service invocation --%><hr/>
+    <%
+    try {
+	com.servico.calcula_retangulo.CalculaRetangulo_Service service = new com.servico.calcula_retangulo.CalculaRetangulo_Service();
+	com.servico.calcula_retangulo.CalculaRetangulo port = service.getCalculaRetanguloPort();
+	 // TODO initialize WS operation arguments here
+	int base = 5;
+	int altura = 6;
+	// TODO process result here
+	java.lang.String result = port.calcularRetangulo(base, altura);
+	out.println("A area do retangulo é: = "+result);
+    } catch (Exception ex) {
+	// TODO handle custom exceptions here
+    }
+    %>
+    <%-- end web service invocation --%><hr/>
+
+    </body>
+</html>

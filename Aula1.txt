@@ -1,0 +1,89 @@
+Aula 1 - Passo a Passo para consumo de outro código na Web no Netbeans:
+
+ITE – TESI (Tópicos Especiais em SI) - Web Services - professor Ms. Marcelo José Storion
+1
+Criar (publicar) o Web Service “BoasVindas”| Uso da Linguagem Java
+Utilizar o Ambiente Integrado de Desenvolvimento NetBeans criando um Novo Projeto do tipo: Aplicação Web.
+1 – Criar ou escolher uma pasta, exemplo NetBeansProjects na unidade C:
+2 - Usar as opções de menu: Arquivo – Novo Projeto – escolher em novo projeto, no item Categorias: Java Web
+e no item projetos: Aplicação Web, clicar botão próximo.
+3 - Na nova janela escolher um Nome para o Projeto: sendo BoasVindas. Escolher a Localização do Projeto
+NetBeansProjects na unidade C: , clicar botão próximo.
+4 – Escolha o Servidor de Aplicação: GlassFish Server no item Servidor e JavaEE 6 na versão Java.
+5 – Finalizar.
+Iniciar o Servidor de Aplicação GlassFish.
+Obs: O mesmo utiliza a porta http://localhost:8080, verificar se a mesma já está sendo utilizada.
+- Escolha o item Serviços, localize o Servidor de Aplicação GlassFish e com um clique com o botão direito do mouse
+escolha a opção Iniciar.
+Obs: Certifique-se de que o mesmo foi inicializado. Sugestão: clicar no botão Executar Projeto para que a página
+index.jsp (“Hello World”) seja executada!
+Adicionando uma classe de Serviço Web a um projeto Aplicação Web.
+1 – Clique com o botão direito do mouse no nó BoasVindas (guia Projetos) e escolha a opção Novo e Web Service.
+- Escolha o nome do Web Service: sendo BoasVindas e o respectivo pacote, sendo com.servico.boasvindas
+- clicar botão finalizar.
+Teste: Executar o aplicativo.
+- Em Projetos, escolha o item web services, localize o web service em questão, “BoasVindas”, clique com o botão direito
+do mouse sobre o mesmo e escolha a opção Testar Web Service.
+- Verificar resultados. Utilizar o serviço.
+Acessar o código do Serviço da Web já disponível (Personalizações).
+A seguir o método web disponível:
+@WebService(
+ name = "BoasVindas",
+ serviceName = "BoasVindasService")
+public class BoasVindas {
+ @WebMethod(operationName = "gerarMensagem")
+ public String gerarMensagem(@WebParam(name = "nome") String nome) {
+ return "Seja bem vindo " + nome + " !";
+ }
+}
+Executar o aplicativo.
+- Em Projetos, escolha o item web services, localize o web service em questão, “BoasVindas”, clique com o botão direito
+do mouse sobre o mesmo e escolha a opção Testar Web Service.
+- Verificar resultados. Utilizar o serviço
+
+-----------------------------------------------------------------------------------------------------
+
+Consumir o Web Service “BoasVindas” da Plataforma Java por uma página JSP na Plataforma Java
+Obs: O Servidor Web deve estar em execução! Portanto deixe o aplicativo (serviço web “BoasVindas”) criado
+anteriormente na plataforma Java aberto no ambiente de desenvolvimento juntamente com o Servidor de
+Aplicativo GlassFish.
+Utilizar o Ambiente Integrado de Desenvolvimento NetBeans criando um Novo Projeto do tipo: Aplicação Web.
+1 - Usar as opções de menu: Arquivo – Novo Projeto – escolher em novo projeto, no item Categorias: Java Web
+e no item projetos: Aplicação Web, clicar botão próximo.
+2 - Na nova janela escolher um Nome para o Projeto: sendo ConsomeBoasVindas. Escolher a Localização do
+Projeto na unidade C: , clicar botão próximo.
+3 – Escolha o Servidor de Aplicação: GlassFish Server no item Servidor e JavaEE 6 na versão Java.
+4 - Testar o servidor de aplicativos GlassFish .
+Adicionar uma Classe SEI (Service Endpoint Interface)
+Obs: o serviço web BoasVindas deve estar ativo.
+Como criar um proxy no NetBeans
+• Clicar com o botão direito do mouse no projeto ConsomeBoasVindas (na guia Projetos)
+e selecione a opção Novo – Cliente para Serviço Web.
+• Na caixa de diálogo selecione Projeto como o código-fonte WSDL. Clique em Procurar. Procure
+o Web Service. Depois de ter selecionado o Web Service, clique em OK.
+Obs: Note que uma nova pasta foi criada, sendo Referências de Web Services.
+Consumir os métodos: “localizar, clicar e arrastar” o método gerarMensagem para a página JSP cliente.
+Realizar as personalizações a seguir e testar a página JSP cliente.
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+ <head>
+ <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ <title>Boas Vindas</title>
+ </head>
+ <body>
+ <h1>Consome!</h1>
+ <%-- start web service invocation --%><hr/>
+ <%
+ try {
+com.servico.boasvindas.BoasVindasService service = new com.servico.boasvindas.BoasVindasService();
+ com.servico.boasvindas.BoasVindas port = service.getBoasVindasPort();
+java.lang.String nome = "Joao Gabriel";
+java.lang.String resultado = port.gerarMensagem(nome);
+out.println("Exibir = "+ resultado);
+ } catch (Exception ex) {
+ }
+ %>
+ <%-- end web service invocation --%><hr/>
+ </body>
+</html>
