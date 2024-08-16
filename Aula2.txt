@@ -1,5 +1,7 @@
 Aula 2 - Uilizando como base o código da aula 1, fazer um exemplo calculando a area de um retângulo:
 
+Exemplo 1:
+
 Servidor:
 
 package com.servico.calcula_retangulo;
@@ -26,7 +28,7 @@ public class Calcula_Retangulo {
     }
 }
 
----------------------------------------------------------------------------------------------------
+
 
 Cliente:
 
@@ -64,3 +66,96 @@ Cliente:
 
     </body>
 </html>
+
+---------------------------------------------------------------------------------------------------
+
+Exemplo 1:
+
+Servidor: 
+
+package com.servico.criarpaciente;
+
+import javax.jws.WebService;
+import javax.jws.WebMethod;
+import javax.jws.WebParam;
+
+@WebService(
+        name = "CriarPaciente",
+        serviceName = "CriarPacienteService")
+public class CriarPaciente {
+
+    @WebMethod(operationName = "gerarPaciente")
+    public Paciente gerarPaciente(@WebParam(name = "nome") String nome, @WebParam(name = "tipoEnfermidade") String tipoEnfermidade) {
+        Paciente pacienteUm = new Paciente(nome, tipoEnfermidade);
+        return pacienteUm;
+    }
+}
+
+Cliente:
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>JSP Page</title>
+        <style>
+            body{
+            background-color: black;
+            color: aliceblue;
+            text-align: center;
+            } 
+        </style>
+    </head>
+    <body>
+        <h1>Hospital ITE!</h1>    <%-- start web service invocation --%><hr/>
+    <%
+    try {
+	com.servico.criarpaciente.CriarPacienteService service = new com.servico.criarpaciente.CriarPacienteService();
+	com.servico.criarpaciente.CriarPaciente port = service.getCriarPacientePort();
+	 // TODO initialize WS operation arguments here
+	java.lang.String nome = "Carlos Soares";
+	java.lang.String tipoEnfermidade = "Gay";
+	// TODO process result here
+	com.servico.criarpaciente.Paciente result = port.gerarPaciente(nome, tipoEnfermidade);
+	out.println("Paciente "+result.getNome()+" com a Enfermidade "+ result.getTipoEnfermidade()+"!! Necessita de cuidados urgêntemente!!");
+    } catch (Exception ex) {
+	// TODO handle custom exceptions here
+    }
+    %>
+    <%-- end web service invocation --%><hr/>
+
+        
+    </body>
+</html>
+
+Paciente: 
+
+package com.servico.criarpaciente;
+
+
+public class Paciente {
+    private String nome;
+    private String tipoEnfermidade;
+    
+    Paciente (String nome, String tipoEnfermidade) {
+        this.nome = nome;
+        this.tipoEnfermidade = tipoEnfermidade;
+    }
+    
+    public void setNome (String nome){
+        this.nome = nome;
+    }
+    
+    public String getNome () {
+        return nome;
+    }
+    
+    public void setTipoEnfermidade (String tipoEnfermidade){
+        this.tipoEnfermidade = tipoEnfermidade;
+    }
+    
+    public String getTipoEnfermidade () {
+        return tipoEnfermidade;
+    }
+}
